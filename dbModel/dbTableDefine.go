@@ -26,6 +26,7 @@ type DBMWJDatabaseType int
 const (
 	DBMWJDT_Unknow DBMWJDatabaseType = iota
 	DBMWJDT_Sqlite
+	DBMWJDT_Postgres
 
 	DBMWJDT_MAXINDEX
 )

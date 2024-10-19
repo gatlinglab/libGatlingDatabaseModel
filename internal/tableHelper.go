@@ -6,6 +6,7 @@ import (
 
 var dbHelperSqlCheckDatabaseVersion = [int(dbModel.DBMWJDT_MAXINDEX) - 1]string{
 	"SELECT sqlite_version()",
+	"SELECT version()",
 }
 
 type ITableHelper interface {
