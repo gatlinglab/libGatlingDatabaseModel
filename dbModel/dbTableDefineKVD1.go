@@ -1,6 +1,9 @@
 package dbModel
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 // id primary, Key string, ValueStr string, ValueInt int, ValueFloat float64,date default now;
 type CWJDBTableIDKVD1 struct {
@@ -21,3 +24,10 @@ const CWJDBTD_IDKVD1_CreateTableSqlite = ` Create Table %s(
 	Date1 TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 `
+
+// interface wisejumper database table model;
+type IWJDBTM_Helper1 interface {
+	IWJDBTM_HelperCommon
+	InsertIDKeyValue(id int64, key, value string) error
+	SelectIDKeyValueTime() (*sql.Rows, error) // id, key, valuestr, date1
+}
