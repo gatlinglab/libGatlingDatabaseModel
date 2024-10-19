@@ -70,8 +70,6 @@ func (pInst *CTableHelper1) InsertIDKeyValue(id int64, key, value string) error 
 	strSql := "insert into " + pInst.tableName + "(id, key, valuestr) values (" + strconv.FormatInt(id, 10)
 	strSql += fmt.Sprintf(",'%s', '%s');", key, value)
 
-	fmt.Println(strSql)
-
 	_, err := pInst.dbInst.ExecSql(strSql)
 
 	return err
