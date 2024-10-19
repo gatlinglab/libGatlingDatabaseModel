@@ -30,3 +30,9 @@ const (
 
 	DBMWJDT_MAXINDEX
 )
+
+type IWJDBTM_HelperCommon interface {
+	CreateTable() error
+	CheckTableExists() bool
+	DropTableIfExists() error
+}
