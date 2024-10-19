@@ -5,18 +5,26 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/gatlinglab/libGatlingDatabaseModel/dbModel"
 )
 
 var dbHelperSqlCreateTable1 = [int(dbModel.DBMWJDT_MAXINDEX) - 1]string{
 	` CREATE TABLE IF NOT EXISTS %s(
-		ID                    BigInt         NOT NULL PRIMARY KEY,
-		Key varchat(128),
-		ValueStr TEXT,
-		ValueInt BigInt,
-		ValueFloat REAL,
-		Date1 TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`,
+		id                    BigInt         NOT NULL PRIMARY KEY,
+		key varchar(128),
+		valuestr TEXT,
+		valueint BigInt,
+		valuefloat REAL,
+		date1 TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`,
+	` CREATE TABLE IF NOT EXISTS %s(
+			id                    BigInt         NOT NULL PRIMARY KEY,
+			key varchar(128),
+			valuestr TEXT,
+			valueint BigInt,
+			valuefloat REAL,
+			date1 TIMESTAMP DEFAULT NOW());`,
 }
 
 type CTableHelper1 struct {
@@ -37,6 +45,7 @@ func NewTableHelper1(db dbModel.IWJDatabase, tablename string) *CTableHelper1 {
 	if tablename == "" {
 		return nil
 	}
+	tablename = strings.ToLower(strings.TrimSpace(tablename))
 	return &CTableHelper1{dbInst: db, databaseType: dbType, tableName: tablename, helpDBDataIndex: int(dbType) - 1}
 }
 
@@ -58,15 +67,17 @@ func (pInst *CTableHelper1) InsertIDKeyValue(id int64, key, value string) error 
 	if pInst.dbInst == nil {
 		return errors.New("no database instance")
 	}
-	strSql := "insert into " + pInst.tableName + "(ID, Key, ValueStr) values (" + strconv.FormatInt(id, 10)
-	strSql += fmt.Sprintf(",\"%s\", \"%s\");", key, value)
+	strSql := "insert into " + pInst.tableName + "(id, key, valuestr) values (" + strconv.FormatInt(id, 10)
+	strSql += fmt.Sprintf(",'%s', '%s');", key, value)
+
+	fmt.Println(strSql)
 
 	_, err := pInst.dbInst.ExecSql(strSql)
 
 	return err
 }
 func (pInst *CTableHelper1) SelectIDKeyValueTime() (*sql.Rows, error) {
-	sql := "select ID, Key, ValueStr, Date1 from " + pInst.tableName
+	sql := "select id, key, valuestr, date1 from " + pInst.tableName
 
 	return pInst.dbInst.Query(sql)
 }
