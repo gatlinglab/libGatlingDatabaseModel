@@ -44,8 +44,8 @@ func (pInst *cDBModelTursoSql) GetDatabaseType() dbModel.DBMWJDatabaseType {
 	return dbModel.DBMWJDT_Sqlite
 }
 
-func (pInst *cDBModelTursoSql) ExecSql(sql string) (sql.Result, error) {
-	return pInst.database.Exec(sql)
+func (pInst *cDBModelTursoSql) ExecSql(sql string, args ...any) (sql.Result, error) {
+	return pInst.database.Exec(sql, args)
 }
 func (pInst *cDBModelTursoSql) Query(sql string) (*sql.Rows, error) {
 	return pInst.database.Query(sql)

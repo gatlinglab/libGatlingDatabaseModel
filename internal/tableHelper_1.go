@@ -32,6 +32,7 @@ type CTableHelper1 struct {
 	dbInst          dbModel.IWJDatabase
 	tableName       string
 	helpDBDataIndex int
+	insertCache     string
 }
 
 func NewTableHelper1(db dbModel.IWJDatabase, tablename string) *CTableHelper1 {
@@ -62,17 +63,27 @@ func (pInst *CTableHelper1) CheckTableExists() bool {
 func (pInst *CTableHelper1) DropTableIfExists() error {
 	return pInst.dbInst.DropTableIfExists(pInst.tableName)
 }
+func (pInst *CTableHelper1) PutCacheIDKeyValue(id int64, key, value string) {
+	pInst.insertCache = pInst.insertCache + "insert into " + pInst.tableName + "(id, key, valuestr) values (" +
+		strconv.FormatInt(id, 10) + fmt.Sprintf(",'%s', '%s');\n", key, value)
+}
+func (pInst *CTableHelper1) ExecPutCache() error {
+	_, err := pInst.dbInst.ExecSql(pInst.insertCache)
+	if err == nil {
+		pInst.insertCache = ""
+	}
+
+	return err
+}
 
 func (pInst *CTableHelper1) InsertIDKeyValue(id int64, key, value string) error {
 	if pInst.dbInst == nil {
 		return errors.New("no database instance")
 	}
-	strSql := "insert into " + pInst.tableName + "(id, key, valuestr) values (" + strconv.FormatInt(id, 10)
-	strSql += fmt.Sprintf(",'%s', '%s');", key, value)
 
-	fmt.Println(strSql)
+	strSql := "insert into " + pInst.tableName + "(id, key, valuestr) values (?,'?','?');"
 
-	_, err := pInst.dbInst.ExecSql(strSql)
+	_, err := pInst.dbInst.ExecSql(strSql, id, key, value)
 
 	return err
 }

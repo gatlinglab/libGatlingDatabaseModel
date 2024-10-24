@@ -35,4 +35,8 @@ type IWJDBTM_HelperCommon interface {
 	CreateTable() error
 	CheckTableExists() bool
 	DropTableIfExists() error
+	///// put insert sql text to cache; exec once by next function;
+	PutCacheIDKeyValue(id int64, key, value string)
+	ExecPutCache()error
+	//// above;
 }

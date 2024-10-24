@@ -8,7 +8,7 @@ type IWJDatabase interface {
 	GetDatabaseVersion() string
 	GetDatabaseType() DBMWJDatabaseType
 	//GetLastError() error
-	ExecSql(sql string) (sql.Result, error)
+	ExecSql(sql string, args ...any) (sql.Result, error)
 	Query(sql string) (*sql.Rows, error)
 	CheckTableExists(tableName string) bool
 	//CreateTableIfNotExists(tableType DBMWJTableType, tableName string) error
