@@ -41,8 +41,8 @@ func (pInst *cDBModelPostgres) GetDatabaseType() dbModel.DBMWJDatabaseType {
 	return dbModel.DBMWJDT_Postgres
 }
 
-func (pInst *cDBModelPostgres) ExecSql(sql string) (sql.Result, error) {
-	return pInst.database.Exec(sql)
+func (pInst *cDBModelPostgres) ExecSql(sql string, args ...any) (sql.Result, error) {
+	return pInst.database.Exec(sql, args)
 }
 func (pInst *cDBModelPostgres) Query(sql string) (*sql.Rows, error) {
 	return pInst.database.Query(sql)
