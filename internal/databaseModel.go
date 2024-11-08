@@ -15,6 +15,8 @@ func NewDbModel(constr, token string) dbModel.IWJDatabase {
 		return newDBModelTursoSql(constr, token)
 	} else if strings.HasPrefix(strTmp, "postgres://") {
 		return newDBModelPostgres(constr)
+	} else if strings.HasPrefix(strTmp, "postgresql://") {
+		return newDBModelPostgres(constr)
 	}
 
 	return nil
