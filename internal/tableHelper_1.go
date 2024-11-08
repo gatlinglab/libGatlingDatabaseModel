@@ -87,6 +87,17 @@ func (pInst *CTableHelper1) InsertIDKeyValue(id int64, key, value string) error 
 
 	return err
 }
+func (pInst *CTableHelper1) InsertKeyValue(key, value string) error {
+	if pInst.dbInst == nil {
+		return errors.New("no database instance")
+	}
+
+	strSql := "insert into " + pInst.tableName + "(key, valuestr) values ('?','?');"
+
+	_, err := pInst.dbInst.ExecSql(strSql, key, value)
+
+	return err
+}
 func (pInst *CTableHelper1) SelectIDKeyValueTime() (*sql.Rows, error) {
 	sql := "select id, key, valuestr, date1 from " + pInst.tableName
 

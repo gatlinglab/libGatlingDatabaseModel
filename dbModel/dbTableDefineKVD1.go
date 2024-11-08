@@ -29,5 +29,6 @@ const CWJDBTD_IDKVD1_CreateTableSqlite = ` Create Table %s(
 type IWJDBTM_Helper1 interface {
 	IWJDBTM_HelperCommon
 	InsertIDKeyValue(id int64, key, value string) error
+	InsertKeyValue(key, value string) error
 	SelectIDKeyValueTime() (*sql.Rows, error) // id, key, valuestr, date1
 }
