@@ -9,12 +9,12 @@ import (
 )
 
 // data@turso.serv00.net;
-const C_DBurl = "libsql://mydata-mydata.turso.io"
-const C_DBToken = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjkwNTIzOTksImlkIjoiY2VlNGUyMGUtMTAxMS00Y2U3LTk2NDYtZmY4OTdlMzIwOGFmIn0.TkDYmlNLPMKLXpy1HM-SFaKnLBMATz1h8utd2mTTbQKdV82v6vhTqV0vr58w59TP2r3nXr62QQYPwhupYzIWDQ"
+// const C_DBurl = "libsql://mydata-mydata.turso.io"
+// const C_DBToken = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjkwNTIzOTksImlkIjoiY2VlNGUyMGUtMTAxMS00Y2U3LTk2NDYtZmY4OTdlMzIwOGFmIn0.TkDYmlNLPMKLXpy1HM-SFaKnLBMATz1h8utd2mTTbQKdV82v6vhTqV0vr58w59TP2r3nXr62QQYPwhupYzIWDQ"
 
 // account: nhost.io: data@turso.serv00.net;
-// const C_DBurl = "postgres://postgres:sn9JbUemd2YAvrTd@bsupuevsulhpmyulypgt.db.eu-central-1.nhost.run:5432/bsupuevsulhpmyulypgt"
-// const C_DBToken = ""
+const C_DBurl = "postgres://postgres:sn9JbUemd2YAvrTd@bsupuevsulhpmyulypgt.db.eu-central-1.nhost.run:5432/bsupuevsulhpmyulypgt"
+const C_DBToken = ""
 
 func TestGDM_CreateSqlDB(t *testing.T) {
 	dbInst := GDM_CreateSqlDB(C_DBurl, C_DBToken)

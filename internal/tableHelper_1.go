@@ -12,14 +12,14 @@ import (
 
 var dbHelperSqlCreateTable1 = [int(dbModel.DBMWJDT_MAXINDEX) - 1]string{
 	` CREATE TABLE IF NOT EXISTS %s(
-		id                    BigInt         NOT NULL PRIMARY KEY,
+		id                    BigInt         NOT NULL PRIMARY KEY ASC AUTOINCREMENT,
 		key varchar(128),
 		valuestr TEXT,
 		valueint BigInt,
 		valuefloat REAL,
 		date1 TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`,
 	` CREATE TABLE IF NOT EXISTS %s(
-			id                    BigInt         NOT NULL PRIMARY KEY,
+			id                    BIGSERIAL         NOT NULL PRIMARY KEY,
 			key varchar(128),
 			valuestr TEXT,
 			valueint BigInt,
@@ -84,6 +84,17 @@ func (pInst *CTableHelper1) InsertIDKeyValue(id int64, key, value string) error 
 	strSql := "insert into " + pInst.tableName + "(id, key, valuestr) values (?,'?','?');"
 
 	_, err := pInst.dbInst.ExecSql(strSql, id, key, value)
+
+	return err
+}
+func (pInst *CTableHelper1) InsertKeyValue(key, value string) error {
+	if pInst.dbInst == nil {
+		return errors.New("no database instance")
+	}
+
+	strSql := "insert into " + pInst.tableName + "(key, valuestr) values ('?','?');"
+
+	_, err := pInst.dbInst.ExecSql(strSql, key, value)
 
 	return err
 }
