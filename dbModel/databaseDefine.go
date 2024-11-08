@@ -5,6 +5,7 @@ import "database/sql"
 type IWJDatabase interface {
 	Connect() error
 	Close()
+	GetDBHandler() *sql.DB
 	GetDatabaseVersion() (string, error)
 	GetDatabaseType() DBMWJDatabaseType
 	//GetLastError() error
