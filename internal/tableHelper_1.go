@@ -12,14 +12,14 @@ import (
 
 var dbHelperSqlCreateTable1 = [int(dbModel.DBMWJDT_MAXINDEX) - 1]string{
 	` CREATE TABLE IF NOT EXISTS %s(
-		id                    BigInt         NOT NULL PRIMARY KEY,
+		id                    BigInt         NOT NULL PRIMARY KEY ASC AUTOINCREMENT,
 		key varchar(128),
 		valuestr TEXT,
 		valueint BigInt,
 		valuefloat REAL,
 		date1 TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`,
 	` CREATE TABLE IF NOT EXISTS %s(
-			id                    BigInt         NOT NULL PRIMARY KEY,
+			id                    BIGSERIAL         NOT NULL PRIMARY KEY,
 			key varchar(128),
 			valuestr TEXT,
 			valueint BigInt,
