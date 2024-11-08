@@ -48,12 +48,12 @@ func (pInst *cDBModelPostgres) Query(sql string) (*sql.Rows, error) {
 	return pInst.database.Query(sql)
 }
 
-func (pInst *cDBModelPostgres) GetDatabaseVersion() string {
+func (pInst *cDBModelPostgres) GetDatabaseVersion() (string, error) {
 	pInst.lastError = nil
 	rows, err := pInst.database.Query(dbHelperSqlCheckDatabaseVersion[int(dbModel.DBMWJDT_Postgres)-1])
 	if err != nil {
 		pInst.lastError = err
-		return ""
+		return "", err
 	}
 
 	var result string
@@ -61,10 +61,10 @@ func (pInst *cDBModelPostgres) GetDatabaseVersion() string {
 		err = rows.Scan(&result)
 		if err != nil {
 			pInst.lastError = err
-			return ""
+			return "", err
 		}
 	}
-	return result
+	return result, nil
 }
 
 func (pInst *cDBModelPostgres) CheckTableExists(tableName string) bool {

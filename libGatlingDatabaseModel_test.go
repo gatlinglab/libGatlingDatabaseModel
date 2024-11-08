@@ -29,7 +29,7 @@ func TestGDM_CreateSqlDB(t *testing.T) {
 		return
 	}
 
-	version := dbInst.GetDatabaseVersion()
+	version, _ := dbInst.GetDatabaseVersion()
 
 	t.Logf("Version: %s\n", version)
 

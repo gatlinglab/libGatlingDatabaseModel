@@ -51,12 +51,12 @@ func (pInst *cDBModelTursoSql) Query(sql string) (*sql.Rows, error) {
 	return pInst.database.Query(sql)
 }
 
-func (pInst *cDBModelTursoSql) GetDatabaseVersion() string {
+func (pInst *cDBModelTursoSql) GetDatabaseVersion() (string, error) {
 	pInst.lastError = nil
 	rows, err := pInst.database.Query(dbHelperSqlCheckDatabaseVersion[int(dbModel.DBMWJDT_Sqlite)-1])
 	if err != nil {
 		pInst.lastError = err
-		return ""
+		return "", err
 	}
 
 	var result string
@@ -64,10 +64,10 @@ func (pInst *cDBModelTursoSql) GetDatabaseVersion() string {
 		err = rows.Scan(&result)
 		if err != nil {
 			pInst.lastError = err
-			return ""
+			return "", err
 		}
 	}
-	return result
+	return result, nil
 }
 
 func (pInst *cDBModelTursoSql) CheckTableExists(tableName string) bool {
