@@ -58,6 +58,7 @@ func (pInst *cDBModelPostgres) GetDatabaseVersion() (string, error) {
 		pInst.lastError = err
 		return "", err
 	}
+	defer rows.Close()
 
 	var result string
 	for rows.Next() {
