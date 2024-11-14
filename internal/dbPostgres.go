@@ -57,12 +57,8 @@ func (pInst *cDBModelPostgres) ExecSql(sql string, args ...any) (sql.Result, err
 	return pInst.database.ExecContext(context, sql, args...)
 }
 func (pInst *cDBModelPostgres) Query(sql string) (*sql.Rows, error) {
-	context1 := context.Background()
-	context, _ := context.WithTimeout(context1, 30*time.Second) //pInst.timeoutSecond)
-	fmt.Println("query 13")
+	context, _ := context.WithTimeout(context.Background(), pInst.timeoutSecond)
 	rows, err := pInst.database.QueryContext(context, sql)
-
-	fmt.Println("query 14")
 	return rows, err
 }
 
