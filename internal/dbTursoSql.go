@@ -21,7 +21,7 @@ func newDBModelTursoSql(constr, token string) *cDBModelTursoSql {
 	return &cDBModelTursoSql{connectStr: constr, connectToken: token, selfDatabaseType: dbModel.DBMWJDT_Sqlite, lastError: nil}
 }
 
-func (pInst *cDBModelTursoSql) Connect() error {
+func (pInst *cDBModelTursoSql) Connect(sslConfig string) error {
 	connector, err := libsql.NewConnector(pInst.connectStr, libsql.WithAuthToken(pInst.connectToken))
 	if err != nil {
 		return err

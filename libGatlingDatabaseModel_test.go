@@ -25,7 +25,7 @@ func TestGDM_CreateSqlDB(t *testing.T) {
 		return
 	}
 
-	err := dbInst.Connect()
+	err := dbInst.Connect("")
 	if err != nil {
 		t.Error("database connect failed: ", err)
 		return
