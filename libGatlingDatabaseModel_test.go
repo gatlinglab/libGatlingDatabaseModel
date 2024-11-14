@@ -25,13 +25,17 @@ func TestGDM_CreateSqlDB(t *testing.T) {
 		return
 	}
 
-	err := dbInst.Connect("")
+	err := dbInst.Connect(C_DBToken)
 	if err != nil {
 		t.Error("database connect failed: ", err)
 		return
 	}
 
-	version, _ := dbInst.GetDatabaseVersion()
+	version, err := dbInst.GetDatabaseVersion()
+	if err != nil {
+		t.Error("database get version failed: ", err)
+		return
+	}
 
 	t.Logf("Version: %s\n", version)
 

@@ -3,6 +3,7 @@ package idbModel
 import (
 	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/gatlinglab/libGatlingDatabaseModel/dbModel"
 	"github.com/tursodatabase/libsql-client-go/libsql"
@@ -39,6 +40,9 @@ func (pInst *cDBModelTursoSql) Connect(sslConfig string) error {
 func (pInst *cDBModelTursoSql) Close() {
 	//pInst.dbConnector.Close()
 	pInst.database.Close()
+}
+func (pInst *cDBModelTursoSql) SetTimeOutSeconds(timeout time.Duration) {
+
 }
 func (pInst *cDBModelTursoSql) GetDatabaseType() dbModel.DBMWJDatabaseType {
 	return dbModel.DBMWJDT_Sqlite
