@@ -22,9 +22,10 @@ func newDBModelPostgres(constr string) *cDBModelPostgres {
 	return &cDBModelPostgres{connectStr: constr, selfDatabaseType: dbModel.DBMWJDT_Postgres, lastError: nil}
 }
 
-func (pInst *cDBModelPostgres) Connect() error {
+func (pInst *cDBModelPostgres) Connect(sslConfig string) error {
 	conn, _ := url.Parse(pInst.connectStr)
-	conn.RawQuery = "sslmode=disable"
+	//conn.RawQuery = "sslmode=disable"
+	conn.RawQuery = sslConfig
 
 	db, err := sql.Open("postgres", conn.String())
 	if err != nil {

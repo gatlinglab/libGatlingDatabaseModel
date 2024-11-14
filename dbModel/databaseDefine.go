@@ -3,7 +3,7 @@ package dbModel
 import "database/sql"
 
 type IWJDatabase interface {
-	Connect() error
+	Connect(sslConfig string) error
 	Close()
 	GetDBHandler() *sql.DB
 	GetDatabaseVersion() (string, error)
