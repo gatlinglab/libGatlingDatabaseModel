@@ -1,9 +1,11 @@
 package idbModel
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/url"
+	"time"
 
 	"github.com/gatlinglab/libGatlingDatabaseModel/dbModel"
 	_ "github.com/lib/pq"
@@ -45,15 +47,22 @@ func (pInst *cDBModelPostgres) GetDBHandler() *sql.DB {
 }
 
 func (pInst *cDBModelPostgres) ExecSql(sql string, args ...any) (sql.Result, error) {
-	return pInst.database.Exec(sql, args...)
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	return pInst.database.ExecContext(context, sql, args...)
 }
 func (pInst *cDBModelPostgres) Query(sql string) (*sql.Rows, error) {
-	return pInst.database.Query(sql)
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	return pInst.database.QueryContext(context, sql)
 }
 
 func (pInst *cDBModelPostgres) GetDatabaseVersion() (string, error) {
 	pInst.lastError = nil
-	rows, err := pInst.database.Query(dbHelperSqlCheckDatabaseVersion[int(dbModel.DBMWJDT_Postgres)-1])
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	rows, err := pInst.database.QueryContext(context, dbHelperSqlCheckDatabaseVersion[int(dbModel.DBMWJDT_Postgres)-1])
 	if err != nil {
 		pInst.lastError = err
 		return "", err
@@ -82,8 +91,10 @@ func (pInst *cDBModelPostgres) CheckTableExists(tableName string) bool {
 	var exists bool
 	//query := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND c.relname = '%s' AND c.relkind = 'r')", tableName)
 
+	context, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
 	query := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '%s')", tableName)
-	err := pInst.database.QueryRow(query).Scan(&exists)
+	err := pInst.database.QueryRowContext(context, query).Scan(&exists)
 
 	//var exists bool
 	//strSql := "select * from information_schema.tables where table_name ='" + tableName + "';"
