@@ -18,6 +18,49 @@ const C_DBurl = "postgresql://796a357a-7cb7-4808-a627-9a836f760ef2-user:pw-5948c
 // "postgres://postgres:sn9JbUemd2YAvrTd@bsupuevsulhpmyulypgt.db.eu-central-1.nhost.run:5432/bsupuevsulhpmyulypgt"
 const C_DBToken = ""
 
+func TestGDM_ShowTableData(t *testing.T) {
+	dbInst := GDM_CreateSqlDB(C_DBurl, C_DBToken)
+	if dbInst == nil {
+		t.Errorf("GDM_CreateSqlDB() error")
+		return
+	}
+
+	err := dbInst.Connect(C_DBToken)
+	if err != nil {
+		t.Error("database connect failed: ", err)
+		return
+	}
+	dbInst.SetTimeOutSeconds(30 * time.Second)
+
+	const testTableName = "dailytest"
+	tableHelp1 := idbModel.NewTableHelper1(dbInst, testTableName)
+	if tableHelp1 == nil {
+		t.Error("table helper create error.")
+		return
+	}
+
+	fmt.Println("query 1")
+	rows, err := tableHelp1.SelectIDKeyValueTime()
+	fmt.Println("query 2")
+	if err != nil {
+		t.Error("select id, key, value error: ", err)
+		return
+	}
+
+	iCount := 0
+	for rows.Next() {
+		iCount++
+		var id int64
+		var strKey string
+		var strValue string
+		var addTime time.Time
+		rows.Scan(&id, &strKey, &strValue, &addTime)
+		fmt.Println("loaded data from table: ", id, strKey, strValue, addTime)
+	}
+	fmt.Println("loaded data total rows: ", iCount)
+
+}
+
 func TestGDM_CreateSqlDB(t *testing.T) {
 	dbInst := GDM_CreateSqlDB(C_DBurl, C_DBToken)
 	if dbInst == nil {

@@ -53,21 +53,22 @@ func (pInst *cDBModelPostgres) GetDBHandler() *sql.DB {
 }
 
 func (pInst *cDBModelPostgres) ExecSql(sql string, args ...any) (sql.Result, error) {
-	context, cancel := context.WithTimeout(context.Background(), pInst.timeoutSecond)
-	defer cancel()
-
+	context, _ := context.WithTimeout(context.Background(), pInst.timeoutSecond)
 	return pInst.database.ExecContext(context, sql, args...)
 }
 func (pInst *cDBModelPostgres) Query(sql string) (*sql.Rows, error) {
-	context, cancel := context.WithTimeout(context.Background(), pInst.timeoutSecond)
-	defer cancel()
-	return pInst.database.QueryContext(context, sql)
+	context1 := context.Background()
+	context, _ := context.WithTimeout(context1, 30*time.Second) //pInst.timeoutSecond)
+	fmt.Println("query 13")
+	rows, err := pInst.database.QueryContext(context, sql)
+
+	fmt.Println("query 14")
+	return rows, err
 }
 
 func (pInst *cDBModelPostgres) GetDatabaseVersion() (string, error) {
 	pInst.lastError = nil
-	context, cancel := context.WithTimeout(context.Background(), pInst.timeoutSecond)
-	defer cancel()
+	context, _ := context.WithTimeout(context.Background(), pInst.timeoutSecond)
 	rows, err := pInst.database.QueryContext(context, dbHelperSqlCheckDatabaseVersion[int(dbModel.DBMWJDT_Postgres)-1])
 	if err != nil {
 		pInst.lastError = err
@@ -97,8 +98,7 @@ func (pInst *cDBModelPostgres) CheckTableExists(tableName string) bool {
 	var exists bool
 	//query := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND c.relname = '%s' AND c.relkind = 'r')", tableName)
 
-	context, cancel := context.WithTimeout(context.Background(), pInst.timeoutSecond)
-	defer cancel()
+	context, _ := context.WithTimeout(context.Background(), pInst.timeoutSecond)
 	query := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '%s')", tableName)
 	err := pInst.database.QueryRowContext(context, query).Scan(&exists)
 
@@ -116,8 +116,7 @@ func (pInst *cDBModelPostgres) CheckTableExists(tableName string) bool {
 }
 func (pInst *cDBModelPostgres) DropTableIfExists(tableName string) error {
 	strSql := "DROP TABLE IF EXISTS " + tableName
-	context, cancel := context.WithTimeout(context.Background(), pInst.timeoutSecond)
-	defer cancel()
+	context, _ := context.WithTimeout(context.Background(), pInst.timeoutSecond)
 	_, err := pInst.database.ExecContext(context, strSql)
 	return err
 }
