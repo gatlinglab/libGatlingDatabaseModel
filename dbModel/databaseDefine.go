@@ -1,6 +1,9 @@
 package dbModel
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
 type IWJDatabase interface {
 	Connect(sslConfig string) error
@@ -14,4 +17,5 @@ type IWJDatabase interface {
 	CheckTableExists(tableName string) bool
 	//CreateTableIfNotExists(tableType DBMWJTableType, tableName string) error
 	DropTableIfExists(tableName string) error
+	SetTimeOutSeconds(time.Duration)
 }
